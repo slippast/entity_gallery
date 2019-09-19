@@ -1,0 +1,18 @@
+; $Id:$
+name = Entity Gallery Display
+description = Adds a display style for an entity gallery
+package = KUED Modules
+core = 7.x
+files[] = entity_gallery.install
+files[] = entity_gallery.module
+files[] = views/views_plugin_entity_gallery.inc
+files[] = views/views_plugin_style_entity_gallery.inc
+
+dependencies[] = entityreference
+dependencies[] = libraries
+dependencies[] = views
+
+version = "7.x-1.0"
+core = "7.x"
+project = "entity_gallery"
+datestamp = "1294805790"

@@ -1,0 +1,417 @@
+<?php
+// $Id$
+
+/**
+ * Implements hook_menu().
+ */
+function entity_gallery_menu() {
+  // Returns AJAX commands if the user has JavaScript turned on.
+/*
+  $items['entity-gallery/first-load'] = array(
+    'title' => 'Entity Gallery ajax first load',
+    'page callback' => 'entity_gallery_first_load',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+*/
+  $items['gallery/ajax/%/%/%/%'] = array(
+    'title' => 'Entity Gallery ajax callback',
+   	'page arguments' => array(2, 3, 4, 5),
+    'page callback' => 'entity_gallery_ajax',
+    'access arguments' => array('access content'),
+		//'delivery callback' => 'entity_gallery_callback', 
+    'type' => MENU_CALLBACK,
+  );
+  // Returns a Non-JavaScript alternative.
+  $items['gallery/nojs/%/%/%/%'] = array(
+    'title' => 'Entity Gallery non-javascript callback',
+   	'page arguments' => array(2, 3, 4, 5),
+    'page callback' => 'entity_gallery_nojs_callback',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+  // The page that will run the command.
+  $items['gallery'] = array(
+    'title' => 'Test AJAX page',
+    'page callback' => 'entity_gallery_test',
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Menu callback.
+ */
+ /*
+function entity_gallery_first_load($action, $type) {
+  if ($type != 'ajax') {
+    // This is js only.
+    return 'Oh well';
+  }
+  $commands = array();
+  //$commands[] = ajax_command_replace('.some-class', date('G:i:s'));
+	$commands[] = ajax_command_replace('#entity-gallery', '<div id="entity-gallery">' . $entity_view . '</div>');
+  $page = array('#type' => 'ajax', '#commands' => $commands);
+  ajax_deliver($page);
+}
+*/
+
+/**
+ * AJAX callback that prints hello world underneath our link.
+ */
+function entity_gallery_ajax($type, $mode, $eid, $class) {
+/*
+	dpm($class);
+	dpm('eid: ');
+	dpm($eid);
+	dpm($mode);
+*/
+    
+  // Create a new AJAX command that replaces the #page text with our own text.
+	$entity = entity_load($type, array($eid));
+	$entity_view = entity_view($type, $entity, $mode);
+	$entity_view = render($entity_view);
+  //dpm($entity_view);
+  //$settings = array('effect' => 'fade');
+  $commands = array();
+  $commands = ajax_command_html('#' . $class . '', '<div id="' . $class . '">' . $entity_view . '</div>');
+
+//dpm($commands);
+    //$page = array('#type' => 'ajax', '#commands' => $commands);
+    //ajax_deliver($page);
+
+  // Return our commands in JSON.
+  //return drupal_json_output($commands);
+	return drupal_json_output(array('status' => 0, 'data' => $commands));
+}
+
+/**
+ * Non-JavaScript callback that returns hello world.
+ */
+function entity_gallery_nojs_callback() {
+  return "entity_gallery_nojs_callback";
+}
+
+
+// test this
+function entity_gallery_test() {
+  // Load in Drupal core AJAX library.
+  drupal_add_library('system', 'drupal.ajax');
+	//drupal_add_library('system', 'jquery.form');
+  // Load in our custom JavaScript.
+  //drupal_add_js(drupal_get_path('module', 'entity_gallery') . '/js/entity-gallery.js');
+
+
+	$ajax = array(
+			'callback' => 'entity_gallery_ajax',
+			'wrapper' => 'entity-gallery',
+			'method' => 'replace',
+			'effect' => 'fade',
+		);
+
+	$link_1 = array(
+		'#type' => 'link',
+		'#title' => t('Load entity: 64465 - video'),
+		'#href' => 'gallery/ajax/node/tiny_tease/64465',
+		'#ajax' => $ajax,
+		// Using the onload below is entirely optional; It's just included as
+		// a reminder of an easy way to add extra simple jQuery tricks.
+	);
+	$link_2 = array(
+		'#type' => 'link',
+		'#title' => t('Load entity: 67835 - video'),
+		'#href' => 'gallery/ajax/node/video_embed_full/67835',
+		'#ajax' => $ajax,
+		// Using the onload below is entirely optional; It's just included as
+		// a reminder of an easy way to add extra simple jQuery tricks.
+	);
+	$link_3 = array(
+		'#type' => 'link',
+		'#title' => t('Load entity: 66727 - episode'),
+		'#href' => 'gallery/ajax/node/teaser/66727',
+		'#ajax' => $ajax,
+		// Using the onload below is entirely optional; It's just included as
+		// a reminder of an easy way to add extra simple jQuery tricks.
+	);
+
+	$stuff = '';
+$break = '<br />';
+$stuff .= drupal_render($link_1);
+$stuff .= $break;
+$stuff .= drupal_render($link_2);
+$stuff .= $break;
+$stuff .= drupal_render($link_3);
+$stuff .= $break;
+
+
+ 	$stuff .= '<div id="entity-gallery">replace me</div>';
+
+  return $stuff;
+}
+
+
+
+
+
+
+
+/*
+function field_group_build_entity_groups(&$vars) {
+	//dpm($vars);
+}
+*/
+/**
+ * Implements hook_init().
+ */
+ /*
+function entity_gallery_init() {
+  drupal_add_js('misc/jquery.form.js');
+  drupal_add_library('system', 'drupal.ajax');
+}
+*/
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function entity_gallery_field_formatter_info() {
+  return array(
+    'entity_gallery' => array(
+      'label' => t('Entity Gallery'),
+      'field types' => array('image', 'media', 'node_reference', 'file', 'entityreference'),
+      'settings'  => array(
+        'main_mode' => 'full',
+        'main_links' => 0,
+        'secondary_mode' => 'teaser',
+        'secondary_links' => 0,
+        'replace_links' => 1,
+        'custom_class' => '',
+      ),
+    ),
+  );
+}
+
+
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function entity_gallery_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  //This gets the view_mode where our settings are stored
+  $display = $instance['display'][$view_mode];
+  //This gets the actual settings
+  $settings = $display['settings'];
+  //Initialize the element variable
+  $element = array();
+
+  $element = array(
+    '#tree' => TRUE,
+  );
+
+	// Need to do some searching to discover the current entity type
+	// in order to display the available view modes.
+	$entity_type = $instance['entity_type'];
+	$entity_details = entity_get_info($instance['entity_type']);
+	$view_modes = $entity_details['view modes'];
+	$mode_options = array();
+	// Build an array of the available modes
+	foreach($view_modes as $key => $mode) {
+		$mode_options[$key] = check_plain($mode['label']);
+	}
+
+  // Select the main mode
+  $element['main_mode'] = array(
+    '#type'           => 'select',
+    '#title'          => t('Primary display mode'),
+    '#description'    => t('Select the view mode to use for the primary item'),
+    '#default_value'  => isset($settings['main_mode']) ? $settings['main_mode'] : 'full',
+    '#options'        => $mode_options,
+  );
+  // Select the main links option
+  $element['main_links'] = array(
+    '#type'           => 'checkbox',
+    '#title'          => t('Show Links?'),
+    '#default_value'  => isset($settings['main_links']) ? $settings['main_links'] : 0,
+  );
+  // Select the secondary mode
+  $element['secondary_mode'] = array(
+    '#type'           => 'select',
+    '#title'          => t('Thumbnail display mode'),
+    '#description'    => t('Select the view mode to use for the smaller previews'),
+    '#default_value'  => $settings['secondary_mode'],
+    '#default_value'  => isset($settings['secondary_mode']) ? $settings['secondary_mode'] : 'teaser',
+    '#options'        => $mode_options,
+  );
+  // Select the secondary links option
+  $element['secondary_links'] = array(
+    '#type'           => 'checkbox',
+    '#title'          => t('Show Links?'),
+    '#default_value'  => isset($settings['secondary_links']) ? $settings['secondary_links'] : 0,
+  );
+
+  // As users if we want to replace their links
+  $element['replace_links'] = array(
+    '#type'           => 'checkbox',
+    '#title'          => t('Replace tease links?'),
+    '#description'    => t('If you turn this on clicking on a tease image will load that content in the primary area.<br />If this option is turned off links will be preserved and clicking on a tease title<br /> or image will link directly to the content.'),
+    '#default_value'  => isset($settings['replace_links']) ? $settings['replace_links'] : 1,
+  );
+	// Custom CSS classes
+  $element['custom_class'] = array(
+    '#type'           => 'textfield',
+    '#title'          => t('Custom Class'),
+    '#description'    => t('Custom class to wrap this element. Otherwise the default "entity-gallery" will be used.'),
+    '#default_value'  => $settings['custom_class'],
+  );
+  return $element;
+}
+
+
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function entity_gallery_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+	//dpm($display);
+  $settings = $display['settings'];
+
+	// Links options should be human readable
+	if($settings['main_links'] == 0) {
+		$main_links = 'No';
+	} else  {
+		$main_links = 'Yes';
+	}
+	if($settings['secondary_links'] == 0) {
+		$secondary_links = 'No';
+	} else  {
+		$secondary_links = 'Yes';
+	}
+	if($settings['replace_links'] == 0) {
+		$replace_links = 'No';
+	} else  {
+		$replace_links = 'Yes';
+	}
+
+	// Send the results back for display
+  $summary = t('Primary view mode: @main_mode<br />Show primary links: @main_links<br />Tease view mode: @secondary_mode<br />Show secondary links: @secondary_links<br />Replace links: @replace_links<br />Custom classes: @custom_class', array(
+    '@main_mode' => $settings['main_mode'],
+    '@main_links' => $main_links,
+    '@secondary_mode' => $settings['secondary_mode'],
+    '@secondary_links' => $secondary_links,
+    '@replace_links' => $replace_links,
+    '@custom_class' => $settings['custom_class'],
+  ));
+  return $summary;
+}
+
+
+/*
+function array_reorder($array, $oldIndex, $newIndex) {
+    array_splice(
+        $array,
+        $newIndex,
+        count($array),
+        array_merge(
+            array_splice($array, $oldIndex, 1),
+            array_slice($array, $newIndex, count($array))
+        )
+    );
+    return $array;
+}
+*/
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function entity_gallery_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array(); // Initialize the var
+
+	$display['settings']['entity_type'] = $entity_type;
+
+
+	//dpm($items);
+/*
+	foreach($items as $item){
+		//dpm($item);
+		$items_reformatted[] = $item['target_id'];
+		//$items_reformatted[][] = $item['target_id'];
+	}
+
+	//dpm($items_reformatted);
+	unset($items);
+
+	foreach($items_reformatted as $item){
+		//dpm($item);
+		$items[]['target_id'] = $item;
+		//$items_reformatted[][] = $item['target_id'];
+	}
+*/
+	//dpm($items);
+
+
+	// Set the default CSS class
+	if($display['settings']['custom_class'] == '') {
+		$custom_class = 'entity-gallery';
+	} else {
+		$custom_class = $display['settings']['custom_class'];
+	}
+
+  $element = array();
+  if (count($items) > 0) {
+    $element[] = array(
+      '#theme' => 'entity_gallery',
+      '#items' => $items,
+      '#settings' => $display['settings'],
+			'#entity_type' => $entity_type,
+			
+      //'#entity' => $entity,
+      //'#field' => $field,
+      //'#instance' => $instance,
+      //'#langcode' => $langcode,
+      //'#display' => $display,
+			
+			'#prefix' => '<div class=\'' . $display['settings']['custom_class'] . '\'>',
+			'#suffix' => '</div>',
+    );
+  }
+
+  return $element;
+}
+
+
+/**
+* Implements hook_theme().
+*/
+function entity_gallery_theme() {
+  return array(
+    'entity_gallery' => array(
+      'template' => 'entity_gallery',
+      'variables' => array('items' => array(), 'settings' => array()),
+			'template' => 'theme/entity-gallery',
+      'file' => 'theme/theme.inc',
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+ /*
+function galleria_theme() {
+  return array(
+   'galleria_container' => array(
+      'variables' => array('items' => array(), 'settings' => array()),
+      'template' => 'theme/galleria-container',
+      'file' => 'theme/theme.inc',
+    ),
+    'galleria_form_table' => array(
+      'render element' => 'form',
+      'file' => 'includes/galleria.admin.inc',
+    ),
+  );
+}
+*/

@@ -1,0 +1,74 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions for the entity_gallery module.
+ */
+
+/**
+ * Implements hook_schema().
+ * Always returns the latest schema version!
+ */
+ /*
+function entity_gallery_schema() {
+  return array(
+    'entity_gallery_optionset' => array(
+      'description' => 'Store option sets for entity_gallery instances.',
+      'fields' => array(
+        'name' => array(
+          'description' => 'The machine-readable option set name.',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ),
+        'title' => array(
+          'description' => 'The human-readable title for this option set.',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+        ),
+        'theme' => array(
+          'description' => 'The entity_gallery theme.',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => 'classic',
+        ),
+        'plugins' => array(
+          'description' => 'The entity_gallery plugins to be loaded.',
+          'type' => 'blob',
+          'size' => 'big',
+          'serialize' => TRUE,
+        ),
+        'imagestyle_thumb' => array(
+          'description' => 'The image style for thumbnails.',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => 'entity_gallery_thumb',
+        ),
+        'imagestyle_normal' => array(
+          'description' => 'The image style for normal images.',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => 'entity_gallery_zoom',
+        ),
+        'imagestyle_big' => array(
+          'description' => 'The image style for big images (lightbox and fullscreen).',
+          'type' => 'varchar',
+          'length' => 255,
+          'not null' => TRUE,
+          'default' => '', // original image
+        ),
+        'options' => array(
+          'description' => 'The options array.',
+          'type' => 'blob',
+          'size' => 'big',
+          'serialize' => TRUE,
+        ),
+      ),
+      'primary key' => array('name'),
+    ),
+  );
+}
+*/
