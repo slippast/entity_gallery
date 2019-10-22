@@ -12,7 +12,6 @@ dependencies[] = entityreference
 dependencies[] = libraries
 dependencies[] = views
 
-version = "7.x-1.0"
+version = "7.x-1.x-dev"
 core = "7.x"
 project = "entity_gallery"
-datestamp = "1294805790"

@@ -9,7 +9,6 @@ function entity_gallery_menu() {
    	'page arguments' => array(2, 3, 4, 5),
     'page callback' => 'entity_gallery_ajax',
     'access arguments' => array('access content'),
-		//'delivery callback' => 'entity_gallery_callback', 
     'type' => MENU_CALLBACK,
   );
   // Returns a Non-JavaScript alternative.
@@ -48,12 +47,9 @@ function entity_gallery_ajax($type, $mode, $class, $eid) {
     $entity_view = file_view($entity, $mode);
     $entity_view = render($entity_view);
   }
-  //dpm($entity_view);
-  //$settings = array('effect' => 'fade');
+
   $commands = array();
-  //$commands = ajax_command_html('#' . $class . '', '<div id="' . $class . '">' . $entity_view . '</div>');
   $commands = ajax_command_html('#' . $class . '', $entity_view);
-  //dpm($commands);
 
   // Return our commands in JSON.
 	return drupal_json_output(array('status' => 0, 'data' => $commands));
@@ -163,13 +159,11 @@ function entity_gallery_field_formatter_settings_form($field, $instance, $view_m
   return $element;
 }
 
-
 /**
  * Implements hook_field_formatter_settings_summary().
  */
 function entity_gallery_field_formatter_settings_summary($field, $instance, $view_mode) {
   $display = $instance['display'][$view_mode];
-	//dpm($display);
   $settings = $display['settings'];
 
 	// Links options should be human readable
@@ -205,11 +199,6 @@ function entity_gallery_field_formatter_settings_summary($field, $instance, $vie
  * Implements hook_field_formatter_view().
  */
 function entity_gallery_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-	//drupal_add_library('system', 'drupal.ajax');
-  //drupal_add_library('system', 'jquery.form');
-//dpm('stuff');
-//dpm($display);
-
   $element = array(); // Initialize the var
 	$display['settings']['entity_type'] = $entity_type;
 
@@ -220,12 +209,7 @@ function entity_gallery_field_formatter_view($entity_type, $entity, $field, $ins
 		$custom_class = $display['settings']['custom_class'];
 	}
 
-//dpm($entity_type);
-$entity_type = 'node';
-//dpm($custom_class);
-//dpm($items);
-//dpm($entity_type);
-
+  $entity_type = 'node';
 
   $element = array();
   if (count($items) > 0) {
@@ -234,19 +218,16 @@ $entity_type = 'node';
       '#items' => $items,
       '#settings' => $display['settings'],
 			'#entity_type' => $entity_type,
-      
       '#attached' => array('library' => array('system', 'drupal.ajax')),
       //'#entity' => $entity,
       //'#field' => $field,
       //'#instance' => $instance,
       //'#langcode' => $langcode,
       //'#display' => $display,
-			
 			'#prefix' => '<div class=\'' . $display['settings']['custom_class'] . '\'>',
 			'#suffix' => '</div>',
     );
   }
-
   return $element;
 }
 

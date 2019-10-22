@@ -34,6 +34,7 @@ function entity_gallery_views_plugins() {
       ),
     ),
 /*
+// Kept for reference
     'row' => array(
       'entity_gallery' => array(
         'title' => t('Entity Gallery'),
@@ -50,7 +51,3 @@ function entity_gallery_views_plugins() {
   );
   return $plugins;
 }
-
-
-
-

@@ -8,7 +8,6 @@
  * Template preprocess handler for 'entity_gallery' theme.
  */
 function template_preprocess_entity_gallery(&$vars) {
-
   // Let's detect the entity type and act accordingly.
   // Only nodes and files work thus far.
   switch ($vars['settings']['entity_type']) {
@@ -149,19 +148,7 @@ function template_preprocess_entity_gallery(&$vars) {
           }
           $vars['render'][$delta] = $vars['items'][$delta][$vars['settings']['entity_type']][$eid['target_id']];
           $vars['render'][$delta]['eid'] = $eid['target_id'];
-  
-          //$vars['items'][$delta][$vars['settings']['entity_type']][$eid['target_id']]['field_image'][0]['#path']['path'] = $ajax_root.$eid['target_id'];
-          //$vars['items'][$delta][$vars['settings']['entity_type']][$eid['target_id']]['field_image'][0]['#class'] = 'use-ajax';
-          //$vars['items'][$delta][$vars['settings']['entity_type']][$eid['target_id']]['field_image']['#class'] = 'use-ajax';
-          //$vars['items'][$delta][$vars['settings']['entity_type']][$eid['target_id']]['field_image']['#items'][0]['class'] = 'use-ajax';
-      
-          //$render = render($vars['items'][$delta][$vars['settings']['entity_type']][$eid['target_id']]['field_image']);
-      
-          //$link = '<a href="'.$ajax_root.$eid['target_id'].'" class="use-ajax">'.$title.'</a>';
-          //$render = render($vars['items'][$delta]);
-          //$pattern = '/<a(.*)href=(")?([a-zA-Z]+)"? ?(.*)>(.*)<\/a>/';
-          //$vars['items'][] = preg_replace($pattern, $link, $render);
-      
+                
           // Fix the markup
           $vars['items'][$delta][$vars['settings']['entity_type']][$eid['target_id']]['title'][0]['#markup'] = '<a href="'.$ajax_root.$eid['target_id'].'" class="use-ajax">'.$title.'</a>';
       

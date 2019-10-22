@@ -4,8 +4,6 @@
  * Default output for a entity gallery entity.
 */
 
-//dpm($render);
-
 ?>
 <div id="entity-gallery" class="<?php print $settings['custom_class'] ?>">
   <div id="<?php print $settings['custom_class'] ?>-<?php print $id; ?>" class="<?php print $settings['custom_class'] ?>-content clearfix">
@@ -41,12 +39,7 @@
       $i++;
             }
 ?>
-      </ul>
-  
-  <?php
-      //jcarousel_add($settings['custom_class'].'-list', array('vertical' => TRUE, 'skin' => 'entity_gallery'));
-  ?>
-  
+      </ul>  
     </div>
   </div>
 </div>

@@ -62,53 +62,52 @@ class views_plugin_style_entity_gallery extends views_plugin_style {
     foreach ($entity_view_modes as $key => $view_mode) {
       $mode_options[$key] = $view_mode['label'];
     }
-
-  // Select the main mode
-  $form['main_mode'] = array(
-    '#type'           => 'select',
-    '#title'          => t('Primary display mode'),
-    '#description'    => t('Select the view mode to use for the primary item'),
-    '#default_value'  => $this->options['main_mode'],
-    '#options'        => $mode_options,
-  );
-  // Select the main links option
-  $form['main_links'] = array(
-    '#type'           => 'checkbox',
-    '#title'          => t('Show Links?'),
-    '#default_value'  => $this->options['main_links'],
-  );
-  // Select the secondary mode
-  $form['secondary_mode'] = array(
-    '#type'           => 'select',
-    '#title'          => t('Thumbnail display mode'),
-    '#description'    => t('Select the view mode to use for the smaller previews'),
-    '#default_value'  => $settings['secondary_mode'],
-    '#default_value'  => $this->options['secondary_mode'],
-    '#options'        => $mode_options,
-  );
-  // Select the secondary links option
-  $form['secondary_links'] = array(
-    '#type'           => 'checkbox',
-    '#title'          => t('Show Links?'),
-    '#default_value'  => $this->options['secondary_links'],
-  );
-
-  // As users if we want to replace their links
-  $form['replace_links'] = array(
-    '#type'           => 'checkbox',
-    '#title'          => t('Replace tease links?'),
-    '#description'    => t('If you turn this on clicking on a tease image will load that content in the primary area.<br />If this option is turned off links will be preserved and clicking on a tease title<br /> or image will link directly to the content.'),
-    '#default_value'  => $this->options['replace_links'],
-  );
-	// Custom CSS classes
-  $form['custom_class'] = array(
-    '#type'           => 'textfield',
-    '#title'          => t('Custom Class'),
-    '#description'    => t('Custom class to wrap this element. Otherwise the default "entity-gallery" will be used.'),
-    '#default_value'  => $this->options['custom_class'],
-  );
-  return $form;
-
+  
+    // Select the main mode
+    $form['main_mode'] = array(
+      '#type'           => 'select',
+      '#title'          => t('Primary display mode'),
+      '#description'    => t('Select the view mode to use for the primary item'),
+      '#default_value'  => $this->options['main_mode'],
+      '#options'        => $mode_options,
+    );
+    // Select the main links option
+    $form['main_links'] = array(
+      '#type'           => 'checkbox',
+      '#title'          => t('Show Links?'),
+      '#default_value'  => $this->options['main_links'],
+    );
+    // Select the secondary mode
+    $form['secondary_mode'] = array(
+      '#type'           => 'select',
+      '#title'          => t('Thumbnail display mode'),
+      '#description'    => t('Select the view mode to use for the smaller previews'),
+      '#default_value'  => $settings['secondary_mode'],
+      '#default_value'  => $this->options['secondary_mode'],
+      '#options'        => $mode_options,
+    );
+    // Select the secondary links option
+    $form['secondary_links'] = array(
+      '#type'           => 'checkbox',
+      '#title'          => t('Show Links?'),
+      '#default_value'  => $this->options['secondary_links'],
+    );
+  
+    // As users if we want to replace their links
+    $form['replace_links'] = array(
+      '#type'           => 'checkbox',
+      '#title'          => t('Replace tease links?'),
+      '#description'    => t('If you turn this on clicking on a tease image will load that content in the primary area.<br />If this option is turned off links will be preserved and clicking on a tease title<br /> or image will link directly to the content.'),
+      '#default_value'  => $this->options['replace_links'],
+    );
+    // Custom CSS classes
+    $form['custom_class'] = array(
+      '#type'           => 'textfield',
+      '#title'          => t('Custom Class'),
+      '#description'    => t('Custom class to wrap this element. Otherwise the default "entity-gallery" will be used.'),
+      '#default_value'  => $this->options['custom_class'],
+    );
+    return $form;
   }
 
   /**
@@ -123,9 +122,6 @@ class views_plugin_style_entity_gallery extends views_plugin_style {
     } elseif($base_table == 'file_managed') {
       $this->view->query->add_field('', 'file_managed.fid', 'fid');
     }
-
-
-    //dpm($this->view->query);
   }
 
   /**
@@ -133,7 +129,6 @@ class views_plugin_style_entity_gallery extends views_plugin_style {
    */
   function pre_render($values) {
     $ids = array();
-    //dpm($values);
 
     switch ($this->base_table) {
       case 'node':
@@ -166,8 +161,6 @@ class views_plugin_style_entity_gallery extends views_plugin_style {
           $ids[] = $row->fid;
         }
         $this->options['entity_type'] = $this->base_table;
-        //$this->entities = file_load_multiple($ids);
-        //dpm($this->entities);
         break;
     }
   }
@@ -191,7 +184,6 @@ class views_plugin_style_entity_gallery extends views_plugin_style {
     if (empty($output)) {
       return;
     }
-
   return $output;
   }
 }

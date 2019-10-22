@@ -9,7 +9,6 @@ padding:0;
 }
 .jcarousel-skin-entity-gallery .jcarousel-clip-horizontal {
 width:100%;
-height:min-height:250px;
 max-height:250px;
 }
 
@@ -99,8 +98,6 @@ background:#000 url(/sites/all/themes/kued-mobile/images/video-button-up-disable
 .jcarousel-skin-entity-gallery .jcarousel-prev-disabled-vertical:active {
 background-size:97%;
 }
-
-
 
 
 /**

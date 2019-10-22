@@ -5,40 +5,11 @@
  * Provides the Entity Gallery views entity style plugin.
  */
 
-/**
+ /**
   * Implements a style type plugin for the Views module.
   */
 class views_plugin_entity_gallery extends views_plugin_style {
 
-/*
-  function init(&$view, &$display, $options = NULL) {
-    parent::init($view, $display, $options);
-    $this->base_table = $view->base_table;
-    $this->base_field = $this->entity_gallery_views_3_support();
-  }
-
-  // Return base_field based on base_table. Shamelessly stolen from Display Suite
- function entity_gallery_views_3_support() {
-    if (strpos($this->base_table, 'eck_') === 0) {
-      // Base tables of entities created by entity construction kit (eck)
-      // are prefixed with 'eck_' and the base field is always 'id'.
-      $this->entity_type = str_replace('eck_', '', $this->base_table);
-      return 'id';
-    }
-
-    $base_table_fields = array(
-      'node' => array('field' => 'nid', 'entity_type' => 'node'),
-      'comment' => array('field' => 'cid', 'entity_type' => 'comment'),
-      'users' => array('field' => 'uid', 'entity_type' => 'user'),
-      //'apachesolr' => array('field' => 'nid', 'entity_type' => 'node'),
-      'taxonomy_term_data' => array('field' => 'tid', 'entity_type' => 'taxonomy_term'),
-      'file_managed' => array('field' => 'fid', 'entity_type' => 'file'),
-      //'micro' => array('field' => 'mid', 'entity_type' => 'micro'),
-    );
-    $this->entity_type = isset($base_table_fields[$this->base_table]) ? $base_table_fields[$this->base_table]['entity_type'] : 'node';
-    return isset($base_table_fields[$this->base_table]) ? $base_table_fields[$this->base_table]['field'] : 'nid';
-  }
-*/
   function option_definition() {
     $options = parent::option_definition();
     $options['main_mode'] = array('default' => 'full');
